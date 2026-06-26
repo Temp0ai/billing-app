@@ -17,3 +17,10 @@
 
 # Compose
 -dontwarn androidx.compose.**
+
+# Apache HTTP
+-dontwarn javax.naming.**
+-dontwarn javax.security.**
+-dontwarn org.ietf.jgss.**
+-dontwarn org.apache.http.**
+-keep class org.apache.http.** { *; }
