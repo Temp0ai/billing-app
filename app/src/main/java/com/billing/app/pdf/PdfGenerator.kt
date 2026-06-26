@@ -91,7 +91,7 @@ class PdfGenerator(private val context: Context) {
             InvoiceType.CREDIT_NOTE -> "CREDIT NOTE"
             InvoiceType.DEBIT_NOTE -> "DEBIT NOTE"
         }
-        canvas.drawText(titleText, pageWidth / 2 - 50, currentY, titlePaint)
+        canvas.drawText(titleText, pageWidth / 2f - 50, currentY, titlePaint)
         currentY += 25
 
         // Divider

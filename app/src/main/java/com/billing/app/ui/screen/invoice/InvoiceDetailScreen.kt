@@ -160,9 +160,9 @@ fun InvoiceDetailScreen(
 
                             Divider(modifier = Modifier.padding(vertical = 4.dp))
 
-                            items(items) { item ->
+                            items.forEachIndexed { index, item ->
                                 Row(modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp)) {
-                                    Text("${items.indexOf(item) + 1}", modifier = Modifier.width(30.dp), fontSize = 12.sp)
+                                    Text("${index + 1}", modifier = Modifier.width(30.dp), fontSize = 12.sp)
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(item.productName, fontSize = 12.sp)
                                         if (item.gstRate > 0) Text("GST: ${item.gstRate}%", fontSize = 10.sp, color = TextSecondary)
