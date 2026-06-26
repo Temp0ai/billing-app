@@ -51,8 +51,8 @@ fun InventoryScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Primary,
                     titleContentColor = TextOnPrimary,
-                    navigationIconColor = TextOnPrimary,
-                    actionIconColor = TextOnPrimary
+                    navigationIconContentColor = TextOnPrimary,
+                    actionIconContentColor = TextOnPrimary
                 )
             )
         }

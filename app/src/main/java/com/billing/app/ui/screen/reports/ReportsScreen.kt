@@ -46,7 +46,7 @@ fun ReportsScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Primary,
                     titleContentColor = TextOnPrimary,
-                    navigationIconColor = TextOnPrimary
+                    navigationIconContentColor = TextOnPrimary
                 )
             )
         }
@@ -136,7 +136,7 @@ fun ReportsScreen(
                             Text("Total Expenses"); Text(CurrencyUtils.formatIndian(yearlyExpenses), fontWeight = FontWeight.Bold)
                         }
                         Spacer(modifier = Modifier.height(8.dp))
-                        HorizontalDivider()
+                        Divider()
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             Text("Net Profit", fontWeight = FontWeight.Bold)
@@ -193,7 +193,7 @@ fun ReportsScreen(
                             Text("SGST"); Text(CurrencyUtils.formatIndian(monthlyTax / 2))
                         }
                         Spacer(modifier = Modifier.height(4.dp))
-                        HorizontalDivider()
+                        Divider()
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             Text("Total GST", fontWeight = FontWeight.Bold)

@@ -53,7 +53,7 @@ fun AddProductScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Primary,
                     titleContentColor = TextOnPrimary,
-                    navigationIconColor = TextOnPrimary
+                    navigationIconContentColor = TextOnPrimary
                 )
             )
         }

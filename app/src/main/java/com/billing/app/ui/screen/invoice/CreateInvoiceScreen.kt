@@ -61,7 +61,7 @@ fun CreateInvoiceScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Primary,
                     titleContentColor = TextOnPrimary,
-                    navigationIconColor = TextOnPrimary
+                    navigationIconContentColor = TextOnPrimary
                 )
             )
         }
@@ -235,6 +235,7 @@ fun CreateInvoiceScreen(
                 Button(
                     onClick = {
                         val invoice = Invoice(
+                            invoiceNumber = "INV-${System.currentTimeMillis()}",
                             partyId = 0,
                             partyName = partyName,
                             partyGstin = partyGstin,

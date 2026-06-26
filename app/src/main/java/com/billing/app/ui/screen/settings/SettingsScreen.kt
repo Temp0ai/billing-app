@@ -41,7 +41,7 @@ fun SettingsScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Primary,
                     titleContentColor = TextOnPrimary,
-                    navigationIconColor = TextOnPrimary
+                    navigationIconContentColor = TextOnPrimary
                 )
             )
         }

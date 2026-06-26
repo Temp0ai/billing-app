@@ -56,7 +56,7 @@ fun DashboardScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Primary,
                     titleContentColor = TextOnPrimary,
-                    actionIconColor = TextOnPrimary
+                    actionIconContentColor = TextOnPrimary
                 )
             )
         },

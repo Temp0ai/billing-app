@@ -56,8 +56,8 @@ fun InvoiceDetailScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Primary,
                     titleContentColor = TextOnPrimary,
-                    navigationIconColor = TextOnPrimary,
-                    actionIconColor = TextOnPrimary
+                    navigationIconContentColor = TextOnPrimary,
+                    actionIconContentColor = TextOnPrimary
                 )
             )
         }
@@ -158,7 +158,7 @@ fun InvoiceDetailScreen(
                                 Text("Amount", modifier = Modifier.width(70.dp), fontWeight = FontWeight.Bold, fontSize = 12.sp)
                             }
 
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                            Divider(modifier = Modifier.padding(vertical = 4.dp))
 
                             items(items) { item ->
                                 Row(modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp)) {
@@ -191,7 +191,7 @@ fun InvoiceDetailScreen(
                             if (inv.roundOff != 0.0) {
                                 TotalRow("Round Off", CurrencyUtils.formatIndian(inv.roundOff))
                             }
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                            Divider(modifier = Modifier.padding(vertical = 8.dp))
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
