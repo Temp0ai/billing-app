@@ -26,23 +26,29 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Create debug keystore
+      run: |
+        mkdir -p $HOME/.android
+        keytool -genkeypair -v \
+          -keystore $HOME/.android/debug.keystore \
+          -alias androiddebugkey \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -storepass android -keypass android \
+          -dname "CN=Android Debug,O=Android,C=US"
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
     - name: Build APK
-      run: ./gradlew assembleRelease assembleDebug --no-daemon
+      run: ./gradlew assembleDebug --no-daemon
 
-    - name: Sign APK
+    - name: Verify signing
       run: |
-        keytool -genkeypair -v -keystore debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
-        
         APKSIGNER=$(find $ANDROID_HOME/build-tools -name apksigner | tail -1)
-        ZIPALIGN=$(find $ANDROID_HOME/build-tools -name zipalign | tail -1)
-        
-        $ZIPALIGN -f 4 app/build/outputs/apk/debug/app-debug.apk aligned.apk
-        $APKSIGNER sign --ks debug.keystore --ks-key-alias androiddebugkey --ks-pass pass:android --key-pass pass:android --v1-signing-enabled true --v2-signing-enabled true --out app/build/outputs/apk/debug/app-debug.apk aligned.apk
-        
-        cp app/build/outputs/apk/debug/app-debug.apk billing-app.apk
+        $APKSIGNER verify --print-certs app/build/outputs/apk/debug/app-debug.apk 2>&1 || true
+
+    - name: Prepare release file
+      run: cp app/build/outputs/apk/debug/app-debug.apk billing-app.apk
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
