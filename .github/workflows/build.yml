@@ -45,9 +45,10 @@ jobs:
     - name: Verify signing
       run: |
         APKSIGNER=$(find $ANDROID_HOME/build-tools -name apksigner | tail -1)
-        $APKSIGNER verify --print-certs app/build/outputs/apk/release/app-release-unsigned.apk 2>&1 || true
-        $APKSIGNER sign --ks $HOME/.android/debug.keystore --ks-key-alias androiddebugkey --ks-pass pass:android --key-pass pass:android --v1-signing-enabled true --v2-signing-enabled true --v3-signing-enabled true app/build/outputs/apk/release/app-release-unsigned.apk 2>&1 || true
-        cp app/build/outputs/apk/release/app-release-unsigned.apk billing-app.apk
+        $APKSIGNER verify --print-certs app/build/outputs/apk/release/app-release.apk 2>&1 || true
+
+    - name: Prepare release file
+      run: cp app/build/outputs/apk/release/app-release.apk billing-app.apk
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
