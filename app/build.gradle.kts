@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.billing.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.billing.app"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -23,6 +23,7 @@ android {
         getByName("debug") {
             enableV1Signing = true
             enableV2Signing = true
+            enableV3Signing = true
         }
     }
 
