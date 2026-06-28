@@ -54,11 +54,20 @@ jobs:
         zip -d work.apk "META-INF/com/android/build/gradle/app-metadata.properties" || true
         zip -d work.apk "assets/dexopt/*" || true
 
-        # Re-zipalign (needed after modifying)
+        # Re-zipalign
         $ZIPALIGN -f 4 /tmp/work.apk /tmp/aligned.apk
 
-        # Copy back
-        cp /tmp/aligned.apk $GITHUB_WORKSPACE/billing-app.apk
+        # Re-sign after removing files
+        $APKSIGNER sign \
+          --ks $HOME/.android/release.keystore \
+          --ks-key-alias billingapp \
+          --ks-pass pass:billing123 \
+          --key-pass pass:billing123 \
+          --v1-signing-enabled true \
+          --v2-signing-enabled true \
+          --v3-signing-enabled true \
+          --out $GITHUB_WORKSPACE/billing-app.apk \
+          /tmp/aligned.apk
 
     - name: Verify signing
       run: |
