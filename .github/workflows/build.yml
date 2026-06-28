@@ -40,34 +40,9 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Release APK
-      run: ./gradlew assembleRelease --no-daemon
-
-    - name: Post-process APK
-      run: |
-        APKSIGNER=$(find $ANDROID_HOME/build-tools -name apksigner | tail -1)
-        ZIPALIGN=$(find $ANDROID_HOME/build-tools -name zipalign | tail -1)
-
-        cp app/build/outputs/apk/release/app-release.apk /tmp/work.apk
-
-        # Remove files that confuse Samsung's installer
-        cd /tmp
-        zip -d work.apk "META-INF/com/android/build/gradle/app-metadata.properties" || true
-        zip -d work.apk "assets/dexopt/*" || true
-
-        # Re-zipalign
-        $ZIPALIGN -f 4 /tmp/work.apk /tmp/aligned.apk
-
-        # Re-sign after removing files
-        $APKSIGNER sign \
-          --ks $HOME/.android/release.keystore \
-          --ks-key-alias billingapp \
-          --ks-pass pass:billing123 \
-          --key-pass pass:billing123 \
-          --v1-signing-enabled true \
-          --v2-signing-enabled true \
-          --v3-signing-enabled true \
-          --out $GITHUB_WORKSPACE/billing-app.apk \
-          /tmp/aligned.apk
+      run: | 
+        ./gradlew assembleRelease --no-daemon
+        cp app/build/outputs/apk/release/app-release.apk $GITHUB_WORKSPACE/billing-app.apk
 
     - name: Verify signing
       run: |
