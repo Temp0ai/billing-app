@@ -26,15 +26,15 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Create debug keystore
+    - name: Create release keystore
       run: |
         mkdir -p $HOME/.android
         keytool -genkeypair -v \
-          -keystore $HOME/.android/debug.keystore \
-          -alias androiddebugkey \
+          -keystore $HOME/.android/release.keystore \
+          -alias billingapp \
           -keyalg RSA -keysize 2048 -validity 10000 \
-          -storepass android -keypass android \
-          -dname "CN=Android Debug,O=Android,C=US"
+          -storepass billing123 -keypass billing123 \
+          -dname "CN=BillingApp,OU=Development,O=BillingApp,L=Unknown,ST=Unknown,C=IN"
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
@@ -42,13 +42,34 @@ jobs:
     - name: Build APK
       run: ./gradlew assembleRelease --no-daemon
 
+    - name: Clean and re-sign APK
+      run: |
+        APKSIGNER=$(find $ANDROID_HOME/build-tools -name apksigner | tail -1)
+        ZIPALIGN=$(find $ANDROID_HOME/build-tools -name zipalign | tail -1)
+        
+        $ZIPALIGN -f 4 app/build/outputs/apk/release/app-release.apk /tmp/aligned.apk
+        
+        cd /tmp
+        cp aligned.apk clean.apk
+        zip -d clean.apk "META-INF/com/android/build/gradle/app-metadata.properties" || true
+        zip -d clean.apk "assets/dexopt/*" || true
+        
+        $ZIPALIGN -f 4 clean.apk /tmp/aligned2.apk
+        $APKSIGNER sign \
+          --ks $HOME/.android/release.keystore \
+          --ks-key-alias billingapp \
+          --ks-pass pass:billing123 \
+          --key-pass pass:billing123 \
+          --v1-signing-enabled true \
+          --v2-signing-enabled true \
+          --v3-signing-enabled true \
+          $GITHUB_WORKSPACE/billing-app.apk \
+          /tmp/aligned2.apk
+
     - name: Verify signing
       run: |
         APKSIGNER=$(find $ANDROID_HOME/build-tools -name apksigner | tail -1)
-        $APKSIGNER verify --print-certs app/build/outputs/apk/release/app-release.apk 2>&1 || true
-
-    - name: Prepare release file
-      run: cp app/build/outputs/apk/release/app-release.apk billing-app.apk
+        $APKSIGNER verify --print-certs billing-app.apk
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4

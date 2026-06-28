@@ -20,7 +20,11 @@ android {
     }
 
     signingConfigs {
-        getByName("debug") {
+        create("release") {
+            storeFile = file(System.getenv("HOME") + "/.android/release.keystore")
+            storePassword = "billing123"
+            keyAlias = "billingapp"
+            keyPassword = "billing123"
             enableV1Signing = true
             enableV2Signing = true
             enableV3Signing = true
@@ -30,12 +34,11 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = true
-            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         release {
             isMinifyEnabled = true
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
