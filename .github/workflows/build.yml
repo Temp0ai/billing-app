@@ -26,6 +26,16 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Create release keystore
+      run: |
+        mkdir -p $HOME/.android
+        keytool -genkeypair -v \
+          -keystore $HOME/.android/release.keystore \
+          -alias billingapp \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -storepass billing123 -keypass billing123 \
+          -dname "CN=BillingApp,OU=Development,O=BillingApp,L=Unknown,ST=Unknown,C=IN"
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
